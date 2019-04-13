@@ -16,7 +16,8 @@
 title: the blog of marty jones
 email: murtin.jones@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  I am a developer
+  I'm a developer at [tailwind](tailwindapp.com), where I build product features.
+  In my free time, I'm learning Rust.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://martyjon.es" # the base hostname & protocol for your site, e.g. http://example.com
 github_username:  murtyjones
