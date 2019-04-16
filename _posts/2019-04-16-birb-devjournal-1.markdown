@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "birb devjournal #1"
+title:  "birb.io – devjournal #1"
 date:   2019-04-16 6:56:24 -0400
 categories: birb
 ---
