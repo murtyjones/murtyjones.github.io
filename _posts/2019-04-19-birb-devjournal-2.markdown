@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "birb.io – devjournal #2"
+date:   2019-04-17 19:23:00 -0400
+categories: birb
+---
 # Working with reasonable limits
 ## EDGAR's 10 requests-per-second limit
 I'm building a project based entirely around data that the SEC makes available on [EDGAR](https://www.sec.gov/edgar/searchedgar/companysearch.html). This is great, because access to the data is free!
