@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Building an Instagram Hashtag Typeahead in JavaScript"
+title:  "building an instagram hashtag typeahead in javascript"
 date:   2019-04-19 16:37:00 -0400
 categories: [tailwind]
 tags: [javascript]
