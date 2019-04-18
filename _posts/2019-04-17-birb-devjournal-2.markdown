@@ -2,7 +2,8 @@
 layout: post
 title:  "birb.io – devjournal #2"
 date:   2019-04-17 19:23:00 -0400
-categories: birb
+categories: [birb]
+tags: [rust]
 ---
 # Working with reasonable limits
 ## EDGAR's 10 requests-per-second limit

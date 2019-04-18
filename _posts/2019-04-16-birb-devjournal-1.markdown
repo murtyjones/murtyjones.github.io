@@ -2,7 +2,8 @@
 layout: post
 title:  "birb.io – devjournal #1"
 date:   2019-04-16 6:56:24 -0400
-categories: birb
+categories: [birb]
+tags: [rust]
 ---
 
 # building an API to scrape public financial data
