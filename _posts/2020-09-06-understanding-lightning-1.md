@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Understanding Bitcoin's Lightning Network - Part I"
-date:   2020-09-6 8:13:00 -0400
+date:   2020-09-06 10:11:00 -0400
 categories: [bitcoin]
 tags: [bitcoin]
 ---
