@@ -1,17 +1,22 @@
-## Funding TX
-- Both parties create a tx with inputs from each party and an output that is a 2-of-2 multisig. They do not sign the tx yet so it is not broadcastable.
+---
+layout: post
+title:  "Understanding Bitcoin's Lightning Network - Part I"
+date:   2020-09-6 8:13:00 -0400
+categories: [bitcoin]
+tags: [bitcoin]
+---
 
-- Next, the parties create a refund transaction, with the multisig tx as input. They sign it. This tx is not yet broadcastable because the funding tx is not signed. but it guarantees that when they sign the funding tx, they both have recourse to get a refund if the other parties doesnt cooperate. If the parties were to sign the funding tx before creating the refund tx, then the funds in the multisig could be locked up forever if the parties don't cooperate, or a hostage situation could be created where one party has to pay another to cooperate. So the refund transaction gives both parties an out if cooperate isn't possible.
+# What are "payment channels" in Bitcoin?
 
-## Revocable tx
+The concept of a *payment channel* has been around since the early days of Bitcoin. The Bitcoin creator even attempted to implement payment channels in Bitcoin's first version. This implementation was hopelessly broken, and ever since then a great number of people have been trying to figure out how to create payment channels in Bitcoin. The *Lightning Network*, which has been up and running since early 2018, is the most famous iteration of payment channels in Bitcoin, and took several years of iteration before being ready for development.
 
-- I sign tx1 giving me $8 and you $2 from a multsig where I own $9 and you own $1. tx1 just needs your signature to be broadcasted.
-- When/if you sign and broadcast tx1, I get $8 immediately and you get $2, but you have
-  to wait one day to claim it, OR you have to have my signature + your signature
-- If we then sign a tx giving me $9 and you $1, you would give me the revocation signature
+But what is a payment channel, and why is it needed?
 
-## One-hop payment channel
+# Bitcoin's transaction model
 
-- Want to send money to Bob, and I don't have a payment channel with Bob
-- Alice has a payment channel with Bob and I have a payment channel with Alice
-- How do I trustlessly 
+All that Bitcoin is, ultimately, is a shared database of transactions that people use to give each other money. A bunch of computers around the world download the same shared database, and all of those computers are all able agree on who has what money using that database.
+
+This means that if I want to send someone money, I need to
+
+1. Have gotten some Bitcoin to spend via one of these transactions in the global database
+2. Create another transaction to send someone else that money, and get that transaction into the global database
