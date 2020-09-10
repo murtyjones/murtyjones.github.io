@@ -16,7 +16,7 @@ In order to work through this example of a simple payment channel, you'll need a
 
 Mutlsignature, or multisig, is a Bitcoin feature that allows coins to be placed into an address (or "account" if it's easier to think of it that way) that requires multiple signatures to spend from. For example, imagine that Alice and Bob want to pool some money together, and want that money to be spent only if both of them "sign off" on it. That would look something like this:
 
-![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning-2/multisig-basic.png){: height="450px"}
+![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning-2/multisig-basic.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 Alice contributes 3 coins and Bob contributes 1 to the pool of multsig money, so that the address has a balance of 4 BTC. You'll notice that the box representing the multisig address says "2-of-2 multisig." What this means is that there are two different keys that can be used to sign new transactions that spend from this address, and both of those signatures are required to spend any money. In other words, you must have 2 of the 2 possible signatures to spend the money. We could instead specify that only one signature is needed (1-of-2), in which case either Alice and Bob could spend the money unilaterally. But with 2-of-2, we require that both parties provide their signatures before the money can be spent.
