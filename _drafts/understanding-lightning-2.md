@@ -38,3 +38,18 @@ Because the Bitcoin database is just a series of blocks that includes transactio
 {: style="text-align: center"}
 Note: Each block is mined roughly 10 minutes after the previous one. Sometimes two blocks are mined just seconds apart and sometimes hours apart, but the average time between blocks is ~10 minutes.
 {: class="img-footnote"}
+
+What we can do, then, is included a timelocked transaction that requires, say, 2 blocks to be mined before it can be spent:
+
+![relative timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning-2/relative-timelock.png){: style="max-height: 450px"}
+{: style="text-align: center"}
+Note: What happens if these coins are spent before 48,904 is mined? Every Bitcoin node will reject the transaction, because they can all determine that there have not been enough blocks mined for the transaction to be spent.
+{: class="img-footnote"}
+
+Now that we have a basic understanding of how multsig and timelocking work in Bitcon, let's see how we can use these features to create a payment channel between Alice and Bob.
+
+# Funding a Payment Channel
+
+Imagine that Alice is a customer at Bob's coffee shop, and she wants to open a payment channel that she can use to buy coffee from Bob every morning.
+
+In order to 
