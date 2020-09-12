@@ -25,3 +25,16 @@ Another nuance with multisig transactions: in this example, we have both Alice a
 
 **Timelock**
 
+This is a feature of Bitcoin that allows coins to be "locked," meaning that they cannot be spend until a certain date and time.
+
+![timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning-2/timelock.png){: style="max-height: 300px"}
+{: style="text-align: center"}
+
+While this concept is simple, there are nuances to it, just like with multisig transactions. There are different ways that a timelock can be expressed. An absolute date/time can be given, e.g. `Saturday, 12 Sep 2020 11:19:25 GMT`. But a more common way to express a timelock in Bitcoin is to use "block height" where a number is given, e.g. `50`, and that number represents the number of blocks that must be mined after the transaction is included in the Bitcoin blockchain before the timelocked transaction can be spent.
+
+Because the Bitcoin database is just a series of blocks that includes transactions, and since each block is built on top of the last one, they form a nice linear series like this:
+
+![blockchain over time]({{ site.baseurl }}/assets/images/understanding-lightning-2/block-time-series.png)
+{: style="text-align: center"}
+Note: Each block is mined roughly 10 minutes after the previous one. Sometimes two blocks are mined just seconds apart and sometimes hours apart, but the average time between blocks is ~10 minutes.
+{: class="img-footnote"}

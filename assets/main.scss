@@ -1,0 +1,13 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+---
+
+@import "minima";
+
+.img-footnote {
+    font-style: italic;
+    color: #888;
+    font-size: 12px;
+    box-sizing: border-box;
+    padding-left: 5px;
+}
