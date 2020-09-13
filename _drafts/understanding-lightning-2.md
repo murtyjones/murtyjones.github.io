@@ -56,3 +56,24 @@ In order for Alice to open a payment channel to Bob, we'll use the two concepts 
 
 ![opening a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/open-one-way-channel.png){: style="max-height: 450px"}
 {: style="text-align: center"}
+
+The above transaction is known as a **funding transaction**, meaning that it funds the payment channel that Alice and Bob will use. Here's how it works:
+
+- Bob sends Alice his public key that he will use to sign future transactions from this channel
+- Alice uses Bob's public key and her own public key to create a new transaction that spends 10 of her coins, sending them to an address that can only be spent from in two ways:
+    1. If Alice & Bob both sign a transaction to spend the coins, OR
+    2. If Alice signs a transaction to spend the coins *and* a week has passed since the funding transaction ws entered into the Bitcoin blockchain
+- Alice broadcasts the transaction, and once a miner includes it in a block, the payment channel is considered "open."
+
+You can see that both of the concepts described above (multsig and timelocking) are used in this transaction.
+
+At this point you might be wondering a couple of things:
+
+1. Why are both Alice and Bob's signatures needed to spend the coins in the first case?
+2. Why is Alice able to spend the coins by herself after 1 week?
+
+Requiring these conditions create a situation where, for 1 week, both Alice and Bob have to sign any transaction *before* it can be broadcasted to miners to include in a block. If it's broadcasted before then and one of Alice or Bob hasn't signed it, a miner won't be able to include it in a block because it'll be rejected, cause the whole block to be rejected. By creating this requirement, Alice and Bob are ensuring that *no one can cheat the other by spending the 10 coins in the payment channel without the other's permission*. Any transaction that is broadcasted must be signed by both parties, so Alice has no way to cheat Bob and vice versa.
+
+After the week has elapsed, *if Alice and Bob have not closed the payment channel yet*, Alice will be able to reclaim her money. Why is this condition included? This is easiest to understanding by thinking about how the transaction would work if we didn't include this condition. Imagine that Alice contributed 10 coins to the payment channel, and Alice + Bob's signature is required to spend any of the coins in that channel for all eternity.
+
+A scenario where there is no timelock/expiration on the payment channel would give Bob some sneaky leverage over Alice, because he can refuse to close the payment channel, leaving Alice stuck without being able to ever get her coins back! In this example, Bob isn't even contributing any money, so he has no cost to bear for this attack. He can simply tell Alice that he wants, say, 5 coins to close the channel, and refuse to sign any transaction that doesn't send him 5 coins. Not great! So we add a timelock of 1 week, which ensures that Alice will be able to get all 10 of her coins back in one week if for some reason Bob isn't cooperating with her and they can't close the transaction together.
