@@ -76,4 +76,30 @@ Requiring these conditions create a situation where, for 1 week, both Alice and 
 
 After the week has elapsed, *if Alice and Bob have not closed the payment channel yet*, Alice will be able to reclaim her money. Why is this condition included? This is easiest to understanding by thinking about how the transaction would work if we didn't include this condition. Imagine that Alice contributed 10 coins to the payment channel, and Alice + Bob's signature is required to spend any of the coins in that channel for all eternity.
 
-A scenario where there is no timelock/expiration on the payment channel would give Bob some sneaky leverage over Alice, because he can refuse to close the payment channel, leaving Alice stuck without being able to ever get her coins back! In this example, Bob isn't even contributing any money, so he has no cost to bear for this attack. He can simply tell Alice that he wants, say, 5 coins to close the channel, and refuse to sign any transaction that doesn't send him 5 coins. Not great! So we add a timelock of 1 week, which ensures that Alice will be able to get all 10 of her coins back in one week if for some reason Bob isn't cooperating with her and they can't close the transaction together.
+A scenario where there is no timelock/expiration on the payment channel would give Bob some sneaky leverage over Alice, because he can refuse to sign a transaction to close the payment channel, leaving Alice unable to get her coins back! In this example, Bob isn't even contributing any money, so he has no cost to bear for this attack. He can simply tell Alice that he wants, say, 5 coins to close the channel, and refuse to sign any transaction that doesn't send him 5 coins. Not great! So we add a timelock of 1 week, which ensures that Alice will be able to get all 10 of her coins back in one week if for some reason Bob isn't cooperating with her and they can't close the transaction together.
+
+Next, let's take a look at how Alice can use the funds in the payment channel to send Bob money once the funding transaction above has been included in the blockchain.
+
+# Spending money in a payment channel
+
+Imagine that Alice and Bob create this transaction on Monday, and Alice goes to Bob's coffee shop on Tuesday wanting to buy her first cup of coffee using this payment channel. Alice signs a transaction and gives it to Bob:
+
+![first transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-first-spend.png){: style="max-height: 450px"}
+{: style="text-align: center"}
+
+This transaction is pretty straightforward. It:
+
+- Spends from the funding transaction.
+- Is signed by Alice
+- Sends 9 coins back to Alice, and 1 coin to Bob (to pay for the coffee).
+
+At this point, Alice gives Bob the transaction and Bob gives Alice a coffee. It's important to note that Alice and Bob are the *only* people who know about this transaction right now. It has *not* been broadcasted to the Bitcoin network.
+
+Bob can broadcast this transaction if he wants to go ahead and claim the coin. But in doing so, he's going to close the payment channel that he and Alice established, and a fee may have to be paid to get the transaction included in a block (how that fee would be paid in this example is out of scope for this post but it's not too complicated).
+
+But Bob knows that Alice will be back tomorrow for another cup of coffee, and Bob also knows that he has 6 days to broadcast a transaction closing the channel (before Alice's timelock is up and she can reclaim her money). So Bob does not broadcast this transaction to miners.
+
+<details>
+    <summary><b>Pop Quiz</b>: If Bob did decide to broadcast the transaction that Alice gives him, what does he need to do before broadcasting it? <i>(Click to see the answer)</i></summary>
+    <i>Because the transaction requires both Alice and Bob's signature to be valid, Bob must <b>Sign the transaction before broadcasting it.</b> Alice has already signed it before giving it to Bob, so his signature is the only one needed to make the transaction valid and he can add it whenever he wants to.</i>
+</details>
