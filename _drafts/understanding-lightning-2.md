@@ -80,7 +80,7 @@ A scenario where there is no timelock/expiration on the payment channel would gi
 
 Next, let's take a look at how Alice can use the funds in the payment channel to send Bob money once the funding transaction above has been included in the blockchain.
 
-# Spending money in a payment channel
+# Spending money in a payment channel: day one
 
 Imagine that Alice and Bob create this transaction on Monday, and Alice goes to Bob's coffee shop on Tuesday wanting to buy her first cup of coffee using this payment channel. Alice signs a transaction and gives it to Bob:
 
@@ -103,3 +103,35 @@ But Bob knows that Alice will be back tomorrow for another cup of coffee, and Bo
     <summary><b>Pop Quiz</b>: If Bob did decide to broadcast the transaction that Alice gives him, what does he need to do before broadcasting it? <i>(Click to see the answer)</i></summary>
     <i>Because the transaction requires both Alice and Bob's signature to be valid, Bob must <b>Sign the transaction before broadcasting it.</b> Alice has already signed it before giving it to Bob, so his signature is the only one needed to make the transaction valid and he can add it whenever he wants to.</i>
 </details>
+
+# Spending money in a payment channel: day two
+
+When Alice comes back on Wednesday to buy her morning coffee from Bob, she once again makes a transaction, signs it, and gives it to Bob:
+
+![second transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-second-spend.png){: style="max-height: 450px"}
+{: style="text-align: center"}
+
+The day two transaction is exactly the same as the day one transaction, except that it gives Bob two coins instead of one (one for the coffee on Tuesday, one for the coffee on Wednesday).
+
+Notice that both of the transactions that Alice gives Bob spend from the funding transaction. This is important, because it means that **only one of these transactions can be included in the blockchain.** In Bitcoin, money cannot be spent multiple times, so only one of these transactions should be broadcasted by Bob. He can sign and broadcast whichever one he wants, but he'll obviously want to broadcast the day two transaction because that's the one that gives him more coins.
+
+Alice and Bob can continue to transact in this way until the timelock approaches, at which point Bob will pick whichever transaction gives him the most coins, then sign and broadcast it so that the channel is closed.
+
+# Spending money in a payment channel: What about Bob?
+
+At this point, we have a working payment channel! But there's an unanswered question: what happens if Bob needs to send Alice money?
+
+Imagine that Bob wants to send Alice a refund for some reason using this payment channel. He could do something like this:
+
+
+
+![trying to spend from the recipient in a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-going-backwards.png){: style="max-height: 450px"}
+{: style="text-align: center"}
+
+The transaction in red above is a transaction that Bob signs and sends to Alice. It's similar to the ones Alice has given Bob already, except that it has Bob's signature and needs Alice's to be spent.
+
+There's a problem with this transaction: how does Alice know that Bob isn't going to just spend the transaction from day two (the one that gives him two coins)? She doesn't. Bob's attempt to give Alice back one coin isn't credible, because Alice knows that Bob can just claim 2 coins anyways after giving her the refund transaction.
+
+This means that our payment channel only functions as a "one way" channel. Alice can pay Bob, but Bob can't pay Alice.
+
+In the next post of this series, we'll examine a way for Alice and Bob to pay one another in what's called a "bi-directional" or "two way" payment channel.
