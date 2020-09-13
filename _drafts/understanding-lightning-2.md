@@ -52,4 +52,7 @@ Now that we have a basic understanding of how multsig and timelocking work in Bi
 
 Imagine that Alice is a customer at Bob's coffee shop, and she wants to open a payment channel that she can use to buy coffee from Bob every morning.
 
-In order to 
+In order for Alice to open a payment channel to Bob, we'll use the two concepts outlined above to create a multsig transaction that Alice & Bob control together.
+
+![opening a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/open-one-way-channel.png){: style="max-height: 450px"}
+{: style="text-align: center"}
