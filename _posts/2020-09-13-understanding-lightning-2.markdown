@@ -123,8 +123,6 @@ At this point, we have a working payment channel! But there's an unanswered ques
 
 Imagine that Bob wants to send Alice a refund for some reason using this payment channel. He could do something like this:
 
-
-
 ![trying to spend from the recipient in a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-going-backwards.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
