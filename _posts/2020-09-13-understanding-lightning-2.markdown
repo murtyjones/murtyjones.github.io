@@ -16,7 +16,7 @@ In order to work through this example of a simple payment channel, you'll need a
 
 Mutlsignature, or multisig, is a Bitcoin feature that allows coins to be placed into an address (or "account" if it's easier to think of it that way) that requires multiple signatures to spend from. For example, imagine that Alice and Bob want to pool some money together, and want that money to be spent only if both of them "sign off" on it. That would look something like this:
 
-![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning-2/multisig-basic.png){: style="max-height: 450px"}
+![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning/multisig-basic.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 Alice contributes 3 coins and Bob contributes 1 to the pool of multsig money, so that the address has a balance of 4 BTC. You'll notice that the box representing the multisig address says "2-of-2 multisig." What this means is that there are two different keys that can be used to sign new transactions that spend from this address, and both of those signatures are required to spend any money. In other words, you must have 2 of the 2 possible signatures to spend the money. We could instead specify that only one signature is needed (1-of-2), in which case either Alice and Bob could spend the money unilaterally. But with 2-of-2, we require that both parties provide their signatures before the money can be spent.
@@ -27,21 +27,21 @@ Another nuance with multisig transactions: in this example, we have both Alice a
 
 This is a feature of Bitcoin that allows coins to be "locked," meaning that they cannot be spend until a certain date and time.
 
-![timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning-2/timelock.png){: style="max-height: 300px"}
+![timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning/timelock.png){: style="max-height: 300px"}
 {: style="text-align: center"}
 
 While this concept is simple, there are nuances to it, just like with multisig transactions. There are different ways that a timelock can be expressed. An absolute date/time can be given, e.g. `Saturday, 12 Sep 2020 11:19:25 GMT`. But a more common way to express a timelock in Bitcoin is to use "block height" where a number is given, e.g. `50`, and that number represents the number of blocks that must be mined after the transaction is included in the Bitcoin blockchain before the timelocked transaction can be spent.
 
 Because the Bitcoin database is just a series of blocks that includes transactions, and since each block is built on top of the last one, they form a nice linear series like this:
 
-![blockchain over time]({{ site.baseurl }}/assets/images/understanding-lightning-2/block-time-series.png)
+![blockchain over time]({{ site.baseurl }}/assets/images/understanding-lightning/block-time-series.png)
 {: style="text-align: center"}
 Note: Each block is mined roughly 10 minutes after the previous one. Sometimes two blocks are mined just seconds apart and sometimes hours apart, but the average time between blocks is ~10 minutes.
 {: class="img-footnote"}
 
 What we can do, then, is included a timelocked transaction that requires, say, 2 blocks to be mined before it can be spent:
 
-![relative timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning-2/relative-timelock.png){: style="max-height: 450px"}
+![relative timelocked transaction example]({{ site.baseurl }}/assets/images/understanding-lightning/relative-timelock.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 Note: What happens if these coins are spent before 48,904 is mined? Every Bitcoin node will reject the transaction, because they can all determine that there have not been enough blocks mined for the transaction to be spent.
 {: class="img-footnote"}
@@ -54,7 +54,7 @@ Imagine that Alice is a customer at Bob's coffee shop, and she wants to open a p
 
 In order for Alice to open a payment channel to Bob, we'll use the two concepts outlined above to create a multsig transaction that Alice & Bob control together.
 
-![opening a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/open-one-way-channel.png){: style="max-height: 450px"}
+![opening a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/open-one-way-channel.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 The above transaction is known as a **funding transaction**, meaning that it funds the payment channel that Alice and Bob will use. Here's how it works:
@@ -84,7 +84,7 @@ Next, let's take a look at how Alice can use the funds in the payment channel to
 
 Imagine that Alice and Bob create this transaction on Monday, and Alice goes to Bob's coffee shop on Tuesday wanting to buy her first cup of coffee using this payment channel. Alice signs a transaction and gives it to Bob:
 
-![first transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-first-spend.png){: style="max-height: 450px"}
+![first transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/one-way-payment-channel-first-spend.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 This transaction is pretty straightforward. It:
@@ -108,7 +108,7 @@ But Bob knows that Alice will be back tomorrow for another cup of coffee, and Bo
 
 When Alice comes back on Wednesday to buy her morning coffee from Bob, she once again makes a transaction, signs it, and gives it to Bob:
 
-![second transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-second-spend.png){: style="max-height: 450px"}
+![second transaction spending from a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/one-way-payment-channel-second-spend.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 The day two transaction is exactly the same as the day one transaction, except that it gives Bob two coins instead of one (one for the coffee on Tuesday, one for the coffee on Wednesday).
@@ -123,7 +123,7 @@ At this point, we have a working payment channel! But there's an unanswered ques
 
 Imagine that Bob wants to send Alice a refund for some reason using this payment channel. He could do something like this:
 
-![trying to spend from the recipient in a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning-2/one-way-payment-channel-going-backwards.png){: style="max-height: 450px"}
+![trying to spend from the recipient in a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/one-way-payment-channel-going-backwards.png){: style="max-height: 450px"}
 {: style="text-align: center"}
 
 The transaction in red above is a transaction that Bob signs and sends to Alice. It's similar to the ones Alice has given Bob already, except that it has Bob's signature and needs Alice's to be spent.
