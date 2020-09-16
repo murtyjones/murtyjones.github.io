@@ -33,3 +33,6 @@ The reason that we have no timelock on this transaction is that, as we'll see in
 Here's how we can avoid non-cooperation: Notice that, at the moment, the funding transaction cannot be broadcasted to the blockchain because of the missing signatures. Alice and Bob left their signatures off of the transaction purposefully, because they both want to ensure that they'll have a way to get their coins back in the event of non-cooperation. Since we have no timelock, neither party currently has a guarantee about being able to get their money back.
 
 The way that Alice and Bob can give each other a guarantee, before opening the payment channel, is to *exchange refund transactions before signing + broadcasting the funding transaction*.
+
+![trying to spend from the recipient in a two-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/open-bi-directional-channel.png){: style="max-height: 250px"}
+{: style="text-align: center"}
