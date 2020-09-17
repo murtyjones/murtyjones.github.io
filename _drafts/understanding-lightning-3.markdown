@@ -74,4 +74,15 @@ So we've shown that Alice and Bob can give each other refund transactions before
 
 Those unintuitive conditions are what will allow Alice and Bob to *revoke transactions*, which we'll cover next.
 
-# Revoking Transactions
+# Revoking the Refund Transactions
+
+So, once Alice and Bob have exchanged refund transactions, they can sign and broadcast the funding transaction:
+
+![trying to spend from the recipient in a two-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/signing-two-way-funding-tx.png){: style="max-height: 450px"}
+{: style="text-align: center"}
+
+Which will open the the payment channel. At this point, the payment channel is open, and both Bob and Alice have the ability, using the refund transactions, to close the channel unilaterally at any time.
+
+But, since Bob and Alice each already have a valid transaction that they can broadcast, there's a problem. Alice can claim 2 coins and Bob can claim 8 using the refund transaction. If Bob then sends Alice 1 coin, Alice knows that Bob could still broadcast his refund transaction, claiming 8 coins.
+
+What Alice and Bob will need to do is revoke the refund transactions
