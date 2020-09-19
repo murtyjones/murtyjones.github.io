@@ -62,7 +62,7 @@ The above transaction is known as a **funding transaction**, meaning that it fun
 - Bob sends Alice his public key that he will use to sign future transactions from this channel
 - Alice uses Bob's public key and her own public key to create a new transaction that spends 10 of her coins, sending them to an address that can only be spent from in two ways:
     1. If Alice & Bob both sign a transaction to spend the coins, OR
-    2. If Alice signs a transaction to spend the coins *and* a week has passed since the funding transaction ws entered into the Bitcoin blockchain
+    2. If Alice signs a transaction to spend the coins *and* a week has passed since the funding transaction was entered into the Bitcoin blockchain
 - Alice broadcasts the transaction, and once a miner includes it in a block, the payment channel is considered "open."
 
 You can see that both of the concepts described above (Multisig and timelocking) are used in this transaction.
