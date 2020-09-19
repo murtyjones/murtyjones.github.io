@@ -59,4 +59,4 @@ If you and I trust each other, we can get around these problems. But what if we 
 
 The payment channel I described above allows us to avoid using the blockchain, but is 1. not very useful (because I can't send you any amount of Bitcoin), and 2. not trustless because you have to trust that I won't cheat you out of the coins after we're done transacting.
 
-In the **[next post]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html)** of this series, I'll dive further into a better construction of payment channels that allows us to solve some of the problems above.
+In the [next post]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html) of this series, I'll dive further into a better construction of payment channels that allows us to solve some of the problems above.

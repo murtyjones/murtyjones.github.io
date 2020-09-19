@@ -6,7 +6,7 @@ categories: [bitcoin]
 tags: [bitcoin]
 ---
 
-In the **[last post]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html)** of this series we discussed the concept of a **one-way payment channel**, where Alice can pay Bob, but Bob cannot pay Alice.
+In the [last post]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html) of this series we discussed the concept of a **one-way payment channel**, where Alice can pay Bob, but Bob cannot pay Alice.
 
 Looking at this image:
 

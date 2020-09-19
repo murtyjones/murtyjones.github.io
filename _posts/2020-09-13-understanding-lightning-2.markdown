@@ -6,7 +6,7 @@ categories: [bitcoin]
 tags: [bitcoin]
 ---
 
-In the **[last post]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html)** of this series about understanding the Lightning Network, I explained the need for payment channels in Bitcoin and gave an example of what a payment channel could look like. That example was (intentionally) simple, but doesn't work well for sending payments outside of the Bitcoin blockchain. In this post, I'll walk through a simple example of a working payment channel in Bitcoin, which was an early predecessor for the Lightning Network.
+In the [last post]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html) of this series about understanding the Lightning Network, I explained the need for payment channels in Bitcoin and gave an example of what a payment channel could look like. That example was (intentionally) simple, but doesn't work well for sending payments outside of the Bitcoin blockchain. In this post, I'll walk through a simple example of a working payment channel in Bitcoin, which was an early predecessor for the Lightning Network.
 
 # Prequisites
 
@@ -132,4 +132,4 @@ There's a problem with this transaction: how does Alice know that Bob isn't goin
 
 This means that our payment channel only functions as a "one way" channel. Alice can pay Bob, but Bob can't pay Alice.
 
-In the **[next post]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html)** of this series, we'll examine a way for Alice and Bob to pay one another in what's called a "bi-directional" or "two way" payment channel.
+In the [next post]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html) of this series, we'll examine a way for Alice and Bob to pay one another in what's called a "bi-directional" or "two way" payment channel.
