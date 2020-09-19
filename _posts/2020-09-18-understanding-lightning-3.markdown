@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Understanding Bitcoin's Lightning Network - Part III"
+title:  "Understanding Lightning Part III – Two-Way Channels"
 date:   2020-09-18 07:54:00 -0400
 categories: [bitcoin]
 tags: [bitcoin]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Understanding Bitcoin's Lightning Network - Part I"
+title:  "Understanding Lightning Part I – Why Payment Channels Matter"
 date:   2020-09-06 10:11:00 -0400
 categories: [bitcoin]
 tags: [bitcoin]
