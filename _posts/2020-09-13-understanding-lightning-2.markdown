@@ -14,7 +14,7 @@ In order to work through this example of a simple payment channel, you'll need a
 
 **Multisig Transactions**
 
-Mutlsignature, or multisig, is a Bitcoin feature that allows coins to be placed into an address (or "account" if it's easier to think of it that way) that requires multiple signatures to spend from. For example, imagine that Alice and Bob want to pool some money together, and want that money to be spent only if both of them "sign off" on it. That would look something like this:
+Multisignature, or multisig, is a Bitcoin feature that allows coins to be placed into an address (or "account" if it's easier to think of it that way) that requires multiple signatures to spend from. For example, imagine that Alice and Bob want to pool some money together, and want that money to be spent only if both of them "sign off" on it. That would look something like this:
 
 ![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning/multisig-basic.png){: style="max-height: 450px" class="lazyload"}
 {: style="text-align: center"}
