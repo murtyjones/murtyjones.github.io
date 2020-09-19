@@ -12,14 +12,14 @@ In the **[last post]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightni
 
 In order to work through this example of a simple payment channel, you'll need a basic understanding of two concepts in Bitcoin: Multisignature transactions, and Timelocked transactions.
 
-**Multsig Transactions**
+**Multisig Transactions**
 
 Mutlsignature, or multisig, is a Bitcoin feature that allows coins to be placed into an address (or "account" if it's easier to think of it that way) that requires multiple signatures to spend from. For example, imagine that Alice and Bob want to pool some money together, and want that money to be spent only if both of them "sign off" on it. That would look something like this:
 
 ![basic multisig]({{ site.baseurl }}/assets/images/understanding-lightning/multisig-basic.png){: style="max-height: 450px" class="lazyload"}
 {: style="text-align: center"}
 
-Alice contributes 3 coins and Bob contributes 1 to the pool of multsig money, so that the address has a balance of 4 BTC. You'll notice that the box representing the multisig address says "2-of-2 multisig." What this means is that there are two different keys that can be used to sign new transactions that spend from this address, and both of those signatures are required to spend any money. In other words, you must have 2 of the 2 possible signatures to spend the money. We could instead specify that only one signature is needed (1-of-2), in which case either Alice and Bob could spend the money unilaterally. But with 2-of-2, we require that both parties provide their signatures before the money can be spent.
+Alice contributes 3 coins and Bob contributes 1 to the pool of Multisig money, so that the address has a balance of 4 BTC. You'll notice that the box representing the multisig address says "2-of-2 multisig." What this means is that there are two different keys that can be used to sign new transactions that spend from this address, and both of those signatures are required to spend any money. In other words, you must have 2 of the 2 possible signatures to spend the money. We could instead specify that only one signature is needed (1-of-2), in which case either Alice and Bob could spend the money unilaterally. But with 2-of-2, we require that both parties provide their signatures before the money can be spent.
 
 Another nuance with multisig transactions: in this example, we have both Alice and Bob contributing money (Alice 3 coins, Bob 1 coin). This isn't required for a multisig transaction. We could construct a multisig where only Alice contributes money, for example, but both signatures are still required to spend the coins. Why would we do something like that? You'll get the answer later on in this post!
 
@@ -46,13 +46,13 @@ What we can do, then, is included a timelocked transaction that requires, say, 2
 Note: What happens if these coins are spent before 48,904 is mined? Every Bitcoin node will reject the transaction, because they can all determine that there have not been enough blocks mined for the transaction to be spent.
 {: class="img-footnote"}
 
-Now that we have a basic understanding of how multsig and timelocking work in Bitcon, let's see how we can use these features to create a payment channel between Alice and Bob.
+Now that we have a basic understanding of how Multisig and timelocking work in Bitcon, let's see how we can use these features to create a payment channel between Alice and Bob.
 
 # Funding a Payment Channel
 
 Imagine that Alice is a customer at Bob's coffee shop, and she wants to open a payment channel that she can use to buy coffee from Bob every morning.
 
-In order for Alice to open a payment channel to Bob, we'll use the two concepts outlined above to create a multsig transaction that Alice & Bob control together.
+In order for Alice to open a payment channel to Bob, we'll use the two concepts outlined above to create a Multisig transaction that Alice & Bob control together.
 
 ![opening a one-way payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/open-one-way-channel.png){: style="max-height: 450px" class="lazyload"}
 {: style="text-align: center"}
@@ -65,7 +65,7 @@ The above transaction is known as a **funding transaction**, meaning that it fun
     2. If Alice signs a transaction to spend the coins *and* a week has passed since the funding transaction ws entered into the Bitcoin blockchain
 - Alice broadcasts the transaction, and once a miner includes it in a block, the payment channel is considered "open."
 
-You can see that both of the concepts described above (multsig and timelocking) are used in this transaction.
+You can see that both of the concepts described above (Multisig and timelocking) are used in this transaction.
 
 At this point you might be wondering a couple of things:
 
