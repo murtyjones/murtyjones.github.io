@@ -46,7 +46,7 @@ What we can do, then, is included a timelocked transaction that requires, say, 2
 Note: What happens if these coins are spent before 48,904 is mined? Every Bitcoin node will reject the transaction, because they can all determine that there have not been enough blocks mined for the transaction to be spent.
 {: class="img-footnote"}
 
-Now that we have a basic understanding of how Multisig and timelocking work in Bitcon, let's see how we can use these features to create a payment channel between Alice and Bob.
+Now that we have a basic understanding of how Multisig and timelocking work in Bitcoin, let's see how we can use these features to create a payment channel between Alice and Bob.
 
 # Funding a Payment Channel
 
