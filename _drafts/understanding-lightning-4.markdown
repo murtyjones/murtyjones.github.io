@@ -17,3 +17,7 @@ What we really need is a way for parties to pay one another **without having to 
 Imagine that we have three parties: Alice, Bob, and Carol. Alice wants to pay Carol `1` coin. But she doesn't have a payment channel open with Carol. Alice *does* have a payment channel with Bob, and Bob has a payment channel with Alice.
 
 ![three parties in a payment channel]({{ site.baseurl }}/assets/images/understanding-lightning/three-parties.png){: class='lazyload'}
+
+So Alice and Carol can both pay Bob, and Bob can pay either, but Alice and Carol cannot pay each other.
+
+For Alice to pay Carol, she'll have to either 1. Open a payment channel with Carol (requires an on-chain transaction), or 2. Find a way to get Bob to pay Carol `1` coin.

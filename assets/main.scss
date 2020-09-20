@@ -16,3 +16,10 @@ $brand-color: #8000FF;
 hr {
     margin-bottom: 15px;
 }
+
+a.site-title {
+    color: $brand-color !important;
+    &:hover {
+        color: black !important;
+    }
+}
