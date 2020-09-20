@@ -3,7 +3,7 @@ layout: post
 title:  "Understanding Lightning Part IV – Payment Forwarding"
 date:   2020-09-19 00:00:00 -0400
 categories: [bitcoin]
-tags: [bitcoin]
+tags: [bitcoin, lightning]
 ---
 
 In the [last post]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html) of this series, we showed how Alice and Bob can pay each other using a *two-way*, or *bi-directional* payment channel. We showed that payment channels can be kept open indefinitely, using a revokable transaction scheme.
@@ -28,9 +28,40 @@ What we really need is a way for Alice to pay Bob 1 coin *only* if Bob pays Caro
 
 --- 
 
-To begin with, Carol will generate a secret, `R`. For now, let's pretend that `R` is `mysecret` (Carol would never actually use this value as it's not secure, this is just for illustration purposes). Carol then hashes `R` using `SHA256`. As you can test [here](https://xorbin.com/tools/sha256-hash-calculator), `sha256('mysecret')` becomes `652c7dc687d98c9889304ed2e408c74b611e86a40caa51c4b43f1dd5913c5cd0`. We'll call this value `H`.
-
 ![carol creates a secret, R, and sends Alice the hash of R]({{ site.baseurl }}/assets/images/understanding-lightning/carol-creates-r.png){: class='lazyload', style="max-height: 121px;"}
 {: style="text-align: center;"}
 
-Carol sends the value of `H` to Alice, but retains the value of `R` so that only she knows it.
+To begin with, Carol will generate a secret, `R`. For now, let's pretend that `R` is `mysecret` (Carol would never actually use this value as it's not secure, this is just for illustration purposes). Carol then hashes `R` using `SHA256`. As you can test [here](https://xorbin.com/tools/sha256-hash-calculator), `sha256('mysecret')` becomes `652c7dc687d98c9889304ed2e408c74b611e86a40caa51c4b43f1dd5913c5cd0`. We'll call this value `H`. Carol sends the value of `H` to Alice, but retains the value of `R` so that only she knows it.
+
+![alice sends bob a conditional transaction]({{ site.baseurl }}/assets/images/understanding-lightning/alice-bob-r-transaction.png){: class='lazyload', style="max-height: 300px;"}
+{: style="text-align: center;"}
+Once Alice has `H`, She'll send Bob a transaction giving Bob 1 coin, but only if Bob can prove that he knows the value that hashes to `H` within the next 5 hours. In other words, he must provide `R`. If Bob cannot prove that he knows `R` within the next 5 hours, Alice would be able to take the coins back using her key.
+
+At this point, Alice has sent Bob a transaction that he cannot redeem, because Bob does not know `R`. But if Alice tells Bob that Carol knows `R`, Bob can attempt to learn `R` from Carol.
+
+![bob sends carol a conditional transaction]({{ site.baseurl }}/assets/images/understanding-lightning/bob-carol-r-transaction.png){: class='lazyload', style="max-height: 300px;"}
+{: style="text-align: center;"}
+
+Bob sends Carol a conditional payment, where Carol must reveal `R` within the next hour to claim 0.99 coins. Notice a few things about this transaction:
+
+- Carol already has `R`, so she can claim the 0.99-coin output immediately
+- Bob is only sending carol 0.99 coins, despite receiving 1 coin from Alice. This is his chosen transaction fee (More on this in just a moment)
+- Bob can claim this output back after just 1 hour
+
+Let's explore each of these points in greater depth.
+
+**Carol knows `R`**
+
+This is pretty straightforward, but Carol knows `R` because she created `R` at the beginning of this transaction process. She can immediately claim the 0.99 coins by including the`R` value of `mysecret` with the transaction when she broadcasts it to the blockchain. Bob still does not know `R`, but when Carol broadcasts this transaction, Bob will be able to see `R` because Carol has to reveal it to the world to claim her 0.99 coins! So Bob guarantees that Carol will have to reveal `R` to him before getting any money.
+
+**Bob sends Carol 0.99 coins, but receives 1 coin from Alice**
+
+Bob has decided that he wants a transaction fee of 0.01 coin to forward this payment to Carol. You might be wondering if Bob could choose a ridiculously high transaction fee, like 0.5 coins for example. Well, he can! But if he does that, Carol is under no obligation to reveal `R` to him. She can decide whether or not she's okay with this transaction fee. If she isn't, she can simply send Alice a message and let her know that the transaction fee is too high, and create a new secret that Alice can use to forward the payment through some other party. So Bob has an incentive to pick a transaction fee that is acceptable to Alice and Carol, because he may lose out on getting a fee altogether if they aren't happy with him. Additionally, they could close their channels with him if they feel that he won't forward payments for a reasonable fee. So yes, Bob can choose his transaction fee, but he has pretty strong incentives to choose a reasonable one.
+
+**Bob sets the locktime to just 1 hour**
+
+Alice's payment to Bob has a locktime of 5 hours (IE she can claim the coin back after 5 hours), but Bob's payment to Carol has a locktime of just 1 hour (IE Bob can claim the 0.99 back after just 1 hour). Why are these locktimes needed, and why is the Bob-> timelock so much shorter than the Alice-> timelock?
+
+Well, Alice needs a timelock so that Bob can't just hang on to the transaction forever. If 5 hours pass and Bob hasn't broadcasted this transaction, Alice can go ahead and claim back her coin, because Bob obviously failed to forward the payment to Carol.
+
+Because Alice gave Bob a timelock, he must get `R` from Carol within 5 hours. But ideally, Bob would have plenty of time to broadcast the transaction once he's learned `R`, because he may not get his transaction included in the blockchain right away. What if no blocks are mined for thirty minutes, or blocks are full and he has a hard time getting his transaction included? Bob needs some leeway between the time that he receives `R` and the time that his payment from Alice expires. So he sets a timelock of 1 hour, requiring Alice to broadcast the transaction immediately and reveal `R` to the world.

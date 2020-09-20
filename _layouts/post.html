@@ -1,0 +1,37 @@
+---
+layout: default
+---
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">{{ page.title | escape }}</h1>
+    <p class="post-meta">
+      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {%- assign date_format = site.minima.date_format | default: "%b %-d, %Y" -%}
+        {{ page.date | date: date_format }}
+      </time>
+      {%- if page.author -%}
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
+      {%- endif -%}</p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  {%- if site.disqus.shortname -%}
+    {%- include disqus_comments.html -%}
+  {%- endif -%}
+
+  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
+</article>
+
+{%- if page.tags contains "bitcoin" -%}
+  <hr class="ellipses grey" />
+  <div id="twitter-prompt">
+    <img src="{{ site.baseurl }}/assets/images/social-icons/Twitter_Social_Icon_Circle_Color.png" />
+    <div class="cta">
+      Have a question about Bitcoin?
+      <a href='https://twitter.com/{{ site.twitter_username }}' target='_blank'>Tweet at me!</a>
+    </p>
+    </div>
+{%- endif -%}

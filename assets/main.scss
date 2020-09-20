@@ -2,6 +2,7 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 $brand-color: #8000FF;
+$grey: #828282;
 
 @import "minima";
 
@@ -21,5 +22,27 @@ a.site-title {
     color: $brand-color !important;
     &:hover {
         color: black !important;
+    }
+}
+
+#twitter-prompt {
+    display: grid;
+    grid-template-columns: 25px auto;
+    max-width: 400px;
+    margin: 0 auto;
+    .cta {
+        font-style: italic;
+        padding-left: 10px;
+    }
+}
+
+hr.ellipses {
+    border: none;
+    text-align: center;
+    font-size: 26px;
+    letter-spacing: 0.6em;
+    color: $grey;
+    &::before {
+        content: '...';
     }
 }
