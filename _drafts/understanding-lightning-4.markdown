@@ -68,6 +68,13 @@ Because Alice gave Bob a timelock, he must get `R` from Carol within 5 hours. Bu
 
 <hr class="ellipses grey" />
 
-Using the system described above, Alice can pay Carol without opening a payment channel on the blockchain. This is the system that the Lightning Network uses, and it is tremendously useful. In the example above, we only have one "hop" between Alice and Carol (Bob is that hop), but we could easily have 3 or 4 or 5 hops between Alice Carol using the same logic. This system is called the **Hashed Time Locked Contract**.
+Using the system described above, Alice can pay Carol without opening a payment channel on the blockchain. This is the system that the Lightning Network uses, and it is tremendously useful. In the example above, we only have one "hop" between Alice and Carol (Bob is that hop), but we could easily have 3 or 4 or 5 hops between Alice Carol using the same logic. These types of transactions are called **Hashed Time Locked Contracts (HTLCs)**.
 
 But there's one catch: Recall that in this scheme, Carol has to broadcast the transaction that uses `R` to claim her 0.99 coins, and Bob has to broadcast the transaction that uses `R` to claim his 1 coin. If either of them fails to broadcast, they could lose their payment because of the timelock that allows the other party to reclaim the money. But broadcasting these transactions will cause Bob's channel with Alice and Carol's channel with Bob to close! Payment channels are all that useful if you have to close them every time you receive money. So let's briefly explore how Alice, Bob, and Carol can avoid needing to close the channels above.
+
+# Revoking and Replacing HTLCs
+
+Suppose that when Carol receives the HTLC giving her 0.99 coins from Bob, she sends Bob the value of `R`:
+
+![carol gives bob r after getting the htlc]({{ site.baseurl }}/assets/images/understanding-lightning/carol-returns-r.png){: class='lazyload', style="max-height: 100px;"}
+{: style="text-align: center;"}
