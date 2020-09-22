@@ -78,3 +78,9 @@ Suppose that when Carol receives the HTLC giving her 0.99 coins from Bob, she se
 
 ![carol gives bob r after getting the htlc]({{ site.baseurl }}/assets/images/understanding-lightning/carol-returns-r.png){: class='lazyload', style="max-height: 100px;"}
 {: style="text-align: center;"}
+
+At this point, Bob knows that Carol knows `R`, because she's revealed it to him. So two important things are true for Bob:
+1. He can now claim his 1 coin from Alice
+2. He knows that there's no way he's getting the 0.99 coins back that he sent to Carol, because she knows `R`, so she can go ahead and claim the money any time.
+
+At this point, if Bob would like to keep his payment channel open with Carol, he can revoke the the same revocation scheme we described in [part III]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html) of this series. For simplicity, I didn't include the revocation logic, but it's exactly the same as in the previous post. Bob can reveal to Carol a key, `BobR`, that will let Carol take the 0.99 coins back if Bob ever tries to claim the HTLC output.
