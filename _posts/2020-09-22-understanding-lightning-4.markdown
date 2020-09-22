@@ -1,10 +1,13 @@
 ---
 layout: post
 title:  "Understanding Lightning Part IV – Payment Forwarding"
-date:   2020-09-19 00:00:00 -0400
+date:   2020-09-22 19:31:00 -0400
 categories: [bitcoin]
 tags: [bitcoin, lightning]
 ---
+
+This is the fourth part of a four-part series about the Lightning Network. See parts [I]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html), [II]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html), and [III]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html).
+{: style="font-style: italic; font-size: 90%; color: #999;"}
 
 In the [last post]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html) of this series, we showed how Alice and Bob can pay each other using a *two-way*, or *bi-directional* payment channel. We showed that payment channels can be kept open indefinitely, using a revokable transaction scheme.
 
@@ -95,5 +98,5 @@ At this point, if Bob would like to keep his payment channel open with Carol, th
 # Conclusion
 
 At this point, you have a good start toward understanding how the Lightning Network can allow Bitcoin users to send each other money without using the Blockchain. As of the time of this post, Lightning is still in the experimental phase. There are issues, both known and unknown, that need to be resolved before the network is safe for regular use. A lot of innovation is coming on the horizon for Lightning (and Bitcoin in general) and now is an incredibly fun time to learn about the technology.
-
+s
 If you're interested in learning more about the technical side of Bitcoin and Lightning, MIT's [Cryptocurrency Engineering and Design course](https://ocw.mit.edu/courses/media-arts-and-sciences/mas-s62-cryptocurrency-engineering-and-design-spring-2018/) is a good starting point. The last draft of the [Lightning Whitepaper](https://lightning.network/lightning-network-paper.pdf) is a bit dated but well worth a read to understand the origins of the network. For a bit more of a technical deep-dive, check out the Lightning Network's [specification](https://github.com/lightningnetwork/lightning-rfc/blob/master/00-introduction.md).

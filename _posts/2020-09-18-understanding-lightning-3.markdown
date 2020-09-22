@@ -6,6 +6,9 @@ categories: [bitcoin]
 tags: [bitcoin]
 ---
 
+This is the third part of a four-part series about the Lightning Network. See parts [I]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html), [II]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html), and [IV]({{ site.baseurl }}/bitcoin/2020/09/22/understanding-lightning-4.html).
+{: style="font-style: italic; font-size: 90%; color: #999;"}
+
 In the [last post]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html) of this series we discussed the concept of a **one-way payment channel**, where Alice can pay Bob, but Bob cannot pay Alice.
 
 Looking at this image:

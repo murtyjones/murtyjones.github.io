@@ -6,6 +6,9 @@ categories: [bitcoin]
 tags: [bitcoin]
 ---
 
+This is the second part of a four-part series about the Lightning Network. See parts [I]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html), [III]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html), and [IV]({{ site.baseurl }}/bitcoin/2020/09/22/understanding-lightning-4.html).
+{: style="font-style: italic; font-size: 90%; color: #999;"}
+
 In the [last post]({{ site.baseurl }}/bitcoin/2020/09/06/understanding-lightning-1.html) of this series about understanding the Lightning Network, I explained the need for payment channels in Bitcoin and gave an example of what a payment channel could look like. That example was (intentionally) simple, but doesn't work well for sending payments outside of the Bitcoin blockchain. In this post, I'll walk through a simple example of a working payment channel in Bitcoin, which was an early predecessor for the Lightning Network.
 
 # Prequisites

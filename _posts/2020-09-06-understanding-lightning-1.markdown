@@ -6,6 +6,9 @@ categories: [bitcoin]
 tags: [bitcoin]
 ---
 
+This is the first part of a four-part series about the Lightning Network. See parts [II]({{ site.baseurl }}/bitcoin/2020/09/13/understanding-lightning-2.html), [III]({{ site.baseurl }}/bitcoin/2020/09/18/understanding-lightning-3.html), and [IV]({{ site.baseurl }}/bitcoin/2020/09/22/understanding-lightning-4.html).
+{: style="font-style: italic; font-size: 90%; color: #999;"}
+
 # What are "payment channels" in Bitcoin?
 
 The concept of a *payment channel* has been around since the early days of Bitcoin. The Bitcoin creator even attempted to implement payment channels in Bitcoin's first version. This implementation was hopelessly broken, and ever since then people have been trying to figure out how to create payment channels in Bitcoin. The *Lightning Network*, which has been up and running since early 2018, is the most well-known payment channel network in Bitcoin, and took several years of iteration before being ready for development.
