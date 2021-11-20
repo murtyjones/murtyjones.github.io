@@ -4,4 +4,4 @@ title: about
 permalink: /about/
 ---
 
-I'm a developer at [Tailwind](https://tailwindapp.com).
+I'm a software developer.
