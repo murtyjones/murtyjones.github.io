@@ -11,7 +11,7 @@ WebAssembly is the future of web apps, and one of the best ways to take advantag
 A few weeks ago I had just such a usecase. I needed:
 
 - A Svelte web app with a textbox and a canvas
-- A WASM module, written in Rust, to manipulate the canvas
+- A WASM module, written in Rust, to render the text from the textbox onto the canvas
 - A web worker to execute the WASM module on a separate thread
 
 To my surprise, it took me several days to hack together a working app capable of the three bullets above. Both Svelte and WASM are newer technologies, so there isn't a ton of documentation about how to use them together, especially in a web worker.
@@ -31,7 +31,7 @@ mkdir rust-wasm-svelte-worker
 cd rust-wasm-svelte-worker
 ```
 
-We'll create the Rust renderer module first. Started by initializing a Rust library for the WASM renderer.
+We'll create the Rust renderer module first. Start by initializing a Rust library for the WASM renderer:
 
 ```
 mkdir rust-renderer
@@ -46,7 +46,7 @@ Depending on when you read this, you may also need to add the following line to 
 cargo-features = ["edition2021"]
 ```
 
-We can now finish off our `Cargo.toml` by adding the dependencies and features needed to manipulate the canvas:
+We can now finish off our `Cargo.toml` by adding the dependencies and features needed to 1. Compile to WebAssembly and 2. Manipulate the canvas:
 
 ```toml
 [lib]
@@ -65,7 +65,7 @@ features = [
 
 ---
 
-Next, let's create a `render` function in `lib.rs`, which we'll leave empty for now but will ultimately be used to draw on the canvas:
+Next, let's create a `render` function in `lib.rs`, which we'll leave empty for now but will ultimately be used to draw text on the canvas:
 
 ```rust
 use wasm_bindgen::prelude::*;
@@ -96,14 +96,14 @@ cd ..
 npx degit sveltejs/template svelte-app
 ```
 
-If you `cd svelte-app` and run `ls`, you should now see the skeleton of your Rust project:
+If you `cd svelte-app` and run `ls`, you should now see the skeleton of your Svelte project:
 
 ```sh
 README.md        public           scripts                                               │ 28
 package.json     rollup.config.js src
 ```
 
-Let's make sure our Svelte app is working:
+Let's make sure our app is working:
 
 ```sh
 # This will take a minute:
@@ -149,14 +149,14 @@ Some of this should look mysterious to you, so let's walk through it line by lin
 1. At the beginning of the file, we import... um, a `Cargo.toml` file? Looks weird, right? For now, all you need to know is that this line will magically import our Rust WASM renderer. You'll see how shortly.
 2. We establish a function called `initialize`, which we then invoke at the bottom of the file. Inside of this function, we:
     - invoke the `wasm` "file" and get back a module
-    - Extract the `render` function that we create in `lib.rs`
+    - Extract the `render` function that we created in `lib.rs`
     - Log the  `render` function
-    - Create a method on [`WorkerGlobalScope.self`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/self), called `onmessage`, that does nothing. For now, all you need to know is that `onmessage` is how the web worker receives events from the web app. This is what we'll use to trigger a render on the canvas
-    - Execute a method on `WorkerGlobalScope.self` called `postMessage`, with the single paramter `"loaded"`. This is the opposite of the `onmessage` method. Which is to say that `postMessage` is how our worker can send events back to the web app. In this case, we're letting the web app know that the worker has successfully loaded
+    - Create a method on [`WorkerGlobalScope.self`](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/self), called `onmessage`, that does nothing (for now). `onmessage` is how the web worker receives events from the web app. This is what we'll use to trigger a render on the canvas
+    - Execute a method on `WorkerGlobalScope.self` called `postMessage`, with the single parameter `"loaded"`. This is the opposite of the `onmessage` method. Which is to say that `postMessage` is how our worker can send events back to the web app. In this case, we're letting the web app know that the worker has successfully loaded
 
-Alright, so we have our web worker with some admittedly mysterious things in it. But how do we actually load that web worker into the Svelte app?
+Alright, so we have our web worker with some admittedly mysterious things in it. But how do we actually load that web worker into the Svelte app? And how does the web worker load the WASM module?
 
-For that, we'll need to visit out rollup config and make some changes.
+To answer that, we'll need to visit out rollup config and make some changes.
 
 ---
 
@@ -197,7 +197,7 @@ And add it to the top of `rollup.config.js`:
 import rust from "@wasm-tool/rollup-plugin-rust";
 ```
 
-This library is a tool for importing Rust modules in JS, and it's how we're enabling the magical `import wasm from '../../rust-renderer/Cargo.toml';` line in our web worker.
+This library is a tool for importing Rust modules in JS, and it's how we're enabling the magical `import wasm from '../../rust-renderer/Cargo.toml';` line in our web worker. The library will replace this line with the import of the actual WASM module for us.
 
 Going back to our `rollup.config.js`, you'll notice that the default export is an object with `input: 'src/main.js'`. This object represents the Svelte app being built, and `src/main.js` is the entrypoint to that app.
 
@@ -227,7 +227,7 @@ export default [
 ]
 ```
 
-Now our rollup config will output a `worker.js` file that is able to load our Rust WASM module.
+Now our rollup config will output a `worker.js` file that is able to load our Rust WASM module thanks to the `rust` plugin.
 
 ---
 
@@ -289,17 +289,16 @@ If you visit the app in the browser at this point, you'll only see a textbox:
 
 ![text box with an empty canvas next to it]({{ site.baseurl }}/assets/images/svelte-wasm-worker/text-empty-canvas.png){: style="max-height: 450px" class="lazyload"}
 
-...because we're not doing anything with the canvas yet.
+...because we're not doing anything with the canvas yet. Right now it's blank.
 
 In order for our web worker to manipulate the canvas, we have to transfer control of the canvas to an [`Offscreen`](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas) that the web worker can control. This is necessary because web workers cannot directly manipulate the DOM, so `OffscreenCanvas` provides a canvas that can be rendered "off screen" for the worker to use. The content of this canvas is then transferred back to the "on screen" canvas.
 
-Let's edit our web worker to enable it to receive on offscreen canvas that it then caches:
+Let's edit our web worker to enable it to receive on offscreen canvas, then cache it:
 
 ```diff
-// worker.js
 import wasm from '../../rust-renderer/Cargo.toml';
 
-+let offscreen = null;
++ let offscreen = null;
 
 async function initialize() {
     const module = await wasm();
@@ -326,7 +325,7 @@ async function initialize() {
 initialize();
 ```
 
-Our worker now listens for `transferCanvas` events from the web app, then caches the offscreen canvas that the web app sends in those events. We're not actually using the offscreen canvas yet, but that will come soon.
+Our worker now listens for a `"transferCanvas"` event from the web app, then caches the offscreen canvas that the web app sends in that event. We're not actually using the offscreen canvas yet, but that will come soon.
 
 In `App.svelte`, let's transfer the canvas to the worker once it's loaded:
 
@@ -365,7 +364,7 @@ In `App.svelte`, let's transfer the canvas to the worker once it's loaded:
 
 ---
 
-At this point, we should be able to add our actual rendering logic.
+At this point, we should be able to add our actual rendering logic by doing the following:
 
 - When the `text` variable changes as a result of user input, send a `"render"` message to the web worker
 - When a `"render"` message is received in the web worker, invoke `render` in our Rust WASM module with the most recent `text`
@@ -413,9 +412,9 @@ Let's start by updating `App.svelte` to send a `"render"` message when `text` ch
 </main>
 ```
 
-- We add a `canvasTransferred` variable locally so that we can avoid attempting to render until the offscreen canvas has been transferred
-- Our reactive `$` block calls `render` any time `text` changes
-- The `render` function posts a `"render"` message to the web worker and includes text to render
+- We add a `canvasTransferred` variable locally so that we can avoid attempting to render until the offscreen canvas has been transferred to the worker
+- Our reactive `$` block calls `render` whenever the value of `text` changes
+- The `render` function posts a `"render"` message to the web worker and includes the text to render
 
 Next, let's handle the `"render"` message in the worker:
 
@@ -456,7 +455,7 @@ initialize();
 
 Our `"render"` message handler uses the provided `text` and the previously cached `offscreen` canvas to invoke the WASM `render` function.
 
-Finally, let's go back to our rust library and make the `render` function apply the text to the canvas:
+Finally, let's go back to our Rust library and make the `render` function apply the text to the canvas:
 
 ```diff
 use wasm_bindgen::prelude::*;
@@ -481,3 +480,9 @@ pub fn render(ctx: CanvasRenderingContext2d, text: String, color: String) {
 Finally, let's run `yarn dev` and visit our browser. We should be able to edit the text box and see the canvas update instantly:
 
 ![final result]({{ site.baseurl }}/assets/images/svelte-wasm-worker/final.gif){: style="max-height: 450px" class="lazyload"}
+
+Even though this example isn't all that complex, hopefully you can see the benefits of being able to:
+
+1. Write potentially complex logic in a language that isn't JavaScript
+2. Execute that logic outside of the main thread in your web app
+
